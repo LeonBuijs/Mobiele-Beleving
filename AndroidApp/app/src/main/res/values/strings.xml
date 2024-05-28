@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Android App</string>
+    <string name="mainButton">Main</string>
+    <string name="scoreButton">Scores</string>
+    <string name="achievementButton">Achievements</string>
 </resources>
