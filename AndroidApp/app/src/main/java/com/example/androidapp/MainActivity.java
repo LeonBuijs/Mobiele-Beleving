@@ -1,6 +1,7 @@
 package com.example.androidapp;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +21,15 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void setMainScreen(View view){
+        setContentView(R.layout.activity_main);
+    }
+    public void setScoreScreen(View view){
+        setContentView(R.layout.scoreview);
+    }
+    public void setAchievementScreen(View view){
+        setContentView(R.layout.achievements);
     }
 }
