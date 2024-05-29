@@ -10,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class achievements extends AppCompatActivity {
+public class Achievements extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class achievements extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
     public void setScoreScreen(View view){
-        startActivity(new Intent(this, scoreview.class));
+        startActivity(new Intent(this, Scoreview.class));
     }
     public void setAchievementScreen(View view){
     }

@@ -7,15 +7,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
-public class scoreview extends AppCompatActivity {
+public class Scoreview extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstancesState) {
@@ -50,6 +46,6 @@ public class scoreview extends AppCompatActivity {
     public void setScoreScreen(View view){
     }
     public void setAchievementScreen(View view){
-        startActivity(new Intent(this, achievements.class));
+        startActivity(new Intent(this, Achievements.class));
     }
 }

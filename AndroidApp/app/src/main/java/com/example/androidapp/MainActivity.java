@@ -3,7 +3,6 @@ package com.example.androidapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public void setMainScreen(View view){
     }
     public void setScoreScreen(View view){
-        startActivity(new Intent(this, scoreview.class));
+        startActivity(new Intent(this, Scoreview.class));
     }
     public void setAchievementScreen(View view){
-        startActivity(new Intent(this, achievements.class));
+        startActivity(new Intent(this, Achievements.class));
     }
 }
