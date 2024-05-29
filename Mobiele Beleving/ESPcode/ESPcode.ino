@@ -34,7 +34,6 @@ const char* MQTT_PASSWORD = "liefsSybeA5";
 
 const char* MQTT_TOPIC_TEST = "MobieleBelevingA5";
 
-
 const int MQTT_QOS = 0;
 
 WiFiClient wifiClient;
@@ -45,54 +44,22 @@ PubSubClient mqttClient(wifiClient);
 Adafruit_NeoPixel heightPixels(numberOfPixels, heightPin, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strikePixels(numberOfPixels, strikePin, NEO_GRB + NEO_KHZ800);
 
-int sensitivityCorrection = 0;
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
   // Logging
   Serial.print("MQTT callback called for topic ");
   Serial.println(topic);
   Serial.print("Payload length ");
   Serial.println(length);
-  
-  // Kijk welk topic is ontvangen en handel daarnaar
-  if (strcmp(topic, MQTT_TOPIC_TEST) == 0) {
-    // De payload is een tekst voor op het LCD
-    // Let op, geen null-terminated string, dus voeg zelf de \0 toe
-    char txt[LINE_LENGTH + 1];
-    for (int i = 0; i < LINE_LENGTH + 1; i++) { txt[i] = '\0'; }
-    strncpy(txt, (const char *) payload, length > 16 ? 16 : length);
-    // Laat de tekst zien in zowel log als op het LCD
-    Serial.print("Text: ");
-    Serial.println(txt);
-    // lcd.clear();
-    // lcd.setCursor(0, 0);
-    // lcd.print(MQTT_TOPIC_LCD);
-    // lcd.setCursor(0, 1);
-    // lcd.print(txt);
-  } 
-  // else if (strcmp(topic, MQTT_TOPIC_BUTTON1) == 0) {
-  //   Serial.println("Button 1 press received");
-  //   for (int led = 0; led < NR_OF_LEDS; led++) {
-  //     ledIntensities[led] = 0;
-  //     setLedIntensity(led, ledIntensities[led]);
-  //   }
-
-  // else {
-  //   Serial.println("Assuming LED topic received");
-  //   char validPayload[16]; // Tijdelijke buffer van 16 chars voor de payload
-  //   byte value; // Hierin komt de getalwaarde na conversie
-  //   // Alleen de eerste 'length' bytes in de payload buffer zijn geldig
-  //   // dus kopieer ze naar een tijdelijke char array en neem niet meer dan 16 chars mee
-  //   strncpy(validPayload, (const char *) payload, length > 16 ? 16 : length);
-  //   // Zet de tekst om in een byte waarde, veronderstel een unsigned int in de tekst
-  //   sscanf((const char *) validPayload, "%u", &value);
-  //   for (int led = 0; led < NR_OF_LEDS; led++) {
-  //     if (strcmp(topic, MQTT_TOPIC_LEDS[led]) == 0) {
-  //       ledIntensities[led] = value;
-  //       setLedIntensity(led, ledIntensities[led]);
-  //     }
-  //   }
-  // }
 }
+
+//variabelen
+int strikeScore = 0;
+int height = 0;
+int score = 0;
+boolean toPlay = true;
+
+int sensitivityCorrection = 0;
+
 
 void setup() {
   Serial.begin(9600);
@@ -139,17 +106,42 @@ void loop() {
   // Serial.println(sensitivityCorrection);
   // printScore(69);
 
-  mqttClient.loop();
+  // mqttClient.loop();
+  // Serial.println(readMaxPressure());
+  if (toPlay) {
+    generateHeight();
+    readMaxPressure();
+    score = returnScore(strikeScore, height);
+    printScore(score);
+    Serial.println(score);
+    strikeScore = 0;
+    height = 0;
+    score = 0;
+  }
 
-  delay(1);
+  delay(100);
+}
+//todo bepalen welke waardes genegeerd moeten worden voor een threshold
+void readMaxPressure() {
+  boolean running = true;
+  while (running) {
+    readSensitivity();
+    int pressure = readPressure();
+    if  (pressure > 300) {
+      strikeScore = pressure;
+      running = false;
+      break;
+    }
+  }
 }
 
 int readPressure() {
-    return analogRead(pinPressureSenor);
+  return analogRead(pinPressureSenor) - sensitivityCorrection;
 }
 
 void readSensitivity() {
-    sensitivityCorrection = analogRead(pinSensitivity);
+  int sensitivity = analogRead(pinSensitivity);
+  sensitivityCorrection = ((sensitivity/100) * 2);
 }
 
 void printLCD(String text) {
@@ -158,9 +150,29 @@ void printLCD(String text) {
 }
 
 void printScore(int score) {
+  lcd.clear();
+
   lcd.setCursor(0,0);
   lcd.print("Score:");
 
   lcd.setCursor(0, 1);
   lcd.print(score);
+}
+
+int returnScore(int score, int height) {
+  int difference = height - score;
+
+  if (difference > 1000 || difference < -1000) {
+    return 0;
+  }
+
+  if (difference < 0) {
+    return 1000 + difference;
+  } else {
+    return 1000 - difference;
+  }
+}
+
+void generateHeight() {
+  height = random(500, 1500);
 }
