@@ -50,6 +50,11 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   Serial.println(topic);
   Serial.print("Payload length ");
   Serial.println(length);
+  
+  char txt[4];
+  for (int i = 0; i < 4; i++) { txt[i] = '\0'; }
+  strncpy(txt, (const char *) payload, length > 4 ? 4 : length);
+  Serial.println(txt);
 }
 
 //variabelen
@@ -86,8 +91,6 @@ void setup() {
     Serial.println("Connected to MQTT broker");
   }
   
-  mqttClient.publish(MQTT_TOPIC_TEST, "hallotjes");
-
   // mqttClient.publish("MQTT_TOPIC_TEST", "test");
   // mqttClient.subscribe("MQTT_TOPIC_TEST");
   if (!mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS)) {
@@ -97,6 +100,8 @@ void setup() {
     Serial.print("Subscribed to topic ");
     Serial.println(MQTT_TOPIC_TEST);
   }
+
+    mqttClient.publish(MQTT_TOPIC_TEST, "hallotjes");
 }
 
 void loop() {
@@ -106,14 +111,28 @@ void loop() {
   // Serial.println(sensitivityCorrection);
   // printScore(69);
 
-  // mqttClient.loop();
+  mqttClient.loop();
   // Serial.println(readMaxPressure());
+
+  // int pres = readPressure();
+  
+  // if (pres > 200) {
+  //   char charInt[5];
+  //   String temp = String(pres);
+  //   // char final = temp.toCharArray(), buf, 5);
+  //   mqttClient.publish(MQTT_TOPIC_TEST, itoa(pres, charInt, 10));
+  // }
+
   if (toPlay) {
     generateHeight();
     readMaxPressure();
     score = returnScore(strikeScore, height);
     printScore(score);
-    Serial.println(score);
+
+    char charInt[5];
+    String temp = String(score);
+    mqttClient.publish(MQTT_TOPIC_TEST, itoa(score, charInt, 10));
+
     strikeScore = 0;
     height = 0;
     score = 0;
@@ -124,13 +143,23 @@ void loop() {
 //todo bepalen welke waardes genegeerd moeten worden voor een threshold
 void readMaxPressure() {
   boolean running = true;
+  int maxPressure = 0;
+  int millisBegin = 0;
+
   while (running) {
+    mqttClient.loop();
     readSensitivity();
     int pressure = readPressure();
     if  (pressure > 300) {
+      // if (maxPressure == 0) {
+      //   millisBegin = millis();
+      // }
+
       strikeScore = pressure;
+      // if (millis() - millisBegin > 1000) {
       running = false;
       break;
+      // }
     }
   }
 }
@@ -145,6 +174,8 @@ void readSensitivity() {
 }
 
 void printLCD(String text) {
+  lcd.clear();
+
   lcd.setCursor(0,0);
   lcd.print(text);
 }
@@ -153,10 +184,12 @@ void printScore(int score) {
   lcd.clear();
 
   lcd.setCursor(0,0);
-  lcd.print("Score:");
+  lcd.print("Score: ");
+  lcd.print(score);
 
   lcd.setCursor(0, 1);
-  lcd.print(score);
+  lcd.print("Height: ");
+  lcd.print(height);
 }
 
 int returnScore(int score, int height) {
