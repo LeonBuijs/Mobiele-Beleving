@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setMainScreen(View view){
-        startActivity(new Intent(this, MainActivity.class));
     }
     public void setScoreScreen(View view){
         startActivity(new Intent(this, scoreview.class));
