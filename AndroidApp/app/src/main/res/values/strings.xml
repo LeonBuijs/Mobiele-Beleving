@@ -3,4 +3,9 @@
     <string name="mainButton">Main</string>
     <string name="scoreButton">Scores</string>
     <string name="achievementButton">Achievements</string>
+
+    <!--Achievements-->
+    <string name="achievement1Name">Naam achievement 1</string>
+    <string name="achievement1Description">Description achievement 1</string>
+    <string name="achievement1Difficulty">Difficulty achievement 1</string>
 </resources>
