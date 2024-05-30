@@ -1,8 +1,11 @@
 package com.example.androidapp;
 
 import android.content.Context;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +30,17 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
     @Override
     public void onBindViewHolder(@NonNull AchievementViewHolder holder, int position) {
         holder.imageView.setImageResource(list.get(position).getImage());
+        if (!list.get(position).isAchieved()){
+            ImageView imageView = holder.imageView;
+
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+
+            imageView.setColorFilter(filter);
+        }
+
         holder.textName.setText(list.get(position).getName());
         holder.textDescription.setText(String.valueOf(list.get(position).getDescription()));
     }

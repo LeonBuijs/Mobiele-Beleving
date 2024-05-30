@@ -1,8 +1,11 @@
 package com.example.androidapp;
 
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +46,9 @@ public class Achievements extends AppCompatActivity {
 
     private void displayItems() {
         achievements.add(new Achievement(R.drawable.eerste_slag1, "Test", "Test", false));
+        achievements.add(new Achievement(R.drawable.verbonden_krijger2, "Test2", "Test2", true));
+        achievements.add(new Achievement(R.drawable.verbonden_krijger2, "Test3", "Test3", false));
+
         recyclerView = findViewById(R.id.recyclerViewAchievements);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
