@@ -8,13 +8,13 @@
 const int pinPressureSenor = 36;
 const int pinSensitivity = 39;
 //neopixels
-const int numberOfPixels = 38;
+const int numberOfPixels = 13;
 
-const int heightPin = -1;//todo
-const int strikePin = -2;//todo
+const int heightPin = 16;//todo
+const int strikePin = 17;//todo
 
 //lcd
-// Set the LCD address, number of columns and rows, and specify SCL and SDA pins
+//Set the LCD address, number of columns and rows, and specify SCL and SDA pins
 //SCL = D22
 //SDA = D21
 const int LINE_LENGTH = 16;
@@ -25,7 +25,7 @@ const char* WLAN_SSID = "iPhone van Jasper";
 const char* WLAN_ACCESS_KEY = "Jahpertje";
 
 //mqtt
-const char* MQTT_CLIENT_ID = "broker.hivemq.com";
+const char* MQTT_CLIENT_ID = "ESP32";
 //todo
 const char* MQTT_BROKER_URL = "broker.hivemq.com";
 const int   MQTT_PORT = 1883;
@@ -87,6 +87,10 @@ void setup() {
 
   if (!mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
     Serial.println("Failed to connect to MQTT broker");
+    while (!mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
+      Serial.println("Failed to connect to MQTT broker");
+      delay(1000);
+    }
   } else {
     Serial.println("Connected to MQTT broker");
   }
@@ -96,22 +100,40 @@ void setup() {
   if (!mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS)) {
     Serial.print("Failed to subscribe to topic ");
     Serial.println(MQTT_TOPIC_TEST);
+    while (!mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS)) {
+      Serial.print("Failed to subscribe to topic ");
+      Serial.println(MQTT_TOPIC_TEST);
+      delay(1000);
+    }
   } else {
     Serial.print("Subscribed to topic ");
     Serial.println(MQTT_TOPIC_TEST);
   }
 
-    mqttClient.publish(MQTT_TOPIC_TEST, "hallotjes");
+  mqttClient.publish(MQTT_TOPIC_TEST, "hallotjes");
+  mqttClient.publish(MQTT_TOPIC_TEST, "test2");
+
+  //leds
+  // heightPixels.begin();
+  // strikePixels.begin();
+
+  // resetHeightPixels();
+  turnOffAllPixels();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // readSensitivity();
-
-  // Serial.println(sensitivityCorrection);
-  // printScore(69);
+  reconnect();
 
   mqttClient.loop();
+
+  // if (!mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS)) {
+  //   Serial.print("Failed to subscribe to topic ");
+  //   Serial.println(MQTT_TOPIC_TEST);
+  // }
+
+  
+
   // Serial.println(readMaxPressure());
 
   // int pres = readPressure();
@@ -125,14 +147,23 @@ void loop() {
 
   if (toPlay) {
     generateHeight();
+
+    prepareSmash((height/100) -2);
+
     readMaxPressure();
+
+    smash((strikeScore/100) -2);
+
     score = returnScore(strikeScore, height);
     printScore(score);
 
     char charInt[5];
     String temp = String(score);
-    mqttClient.publish(MQTT_TOPIC_TEST, itoa(score, charInt, 10));
 
+    reconnect();
+
+    mqttClient.publish(MQTT_TOPIC_TEST, itoa(score, charInt, 10));
+    
     strikeScore = 0;
     height = 0;
     score = 0;
@@ -147,19 +178,14 @@ void readMaxPressure() {
   int millisBegin = 0;
 
   while (running) {
+    reconnect();
     mqttClient.loop();
     readSensitivity();
     int pressure = readPressure();
     if  (pressure > 300) {
-      // if (maxPressure == 0) {
-      //   millisBegin = millis();
-      // }
-
       strikeScore = pressure;
-      // if (millis() - millisBegin > 1000) {
       running = false;
       break;
-      // }
     }
   }
 }
@@ -186,6 +212,8 @@ void printScore(int score) {
   lcd.setCursor(0,0);
   lcd.print("Score: ");
   lcd.print(score);
+  lcd.print("/");
+  lcd.print(strikeScore);
 
   lcd.setCursor(0, 1);
   lcd.print("Height: ");
@@ -208,4 +236,54 @@ int returnScore(int score, int height) {
 
 void generateHeight() {
   height = random(500, 1500);
+}
+
+void resetHeightPixels() {
+  for (int i = 0; i < numberOfPixels; i++) {
+    heightPixels.setPixelColor(i, heightPixels.Color(255, 0, 0));
+  }
+  heightPixels.setBrightness(150);
+  
+  heightPixels.show();
+}
+
+void prepareSmash(int height){
+  resetHeightPixels();
+
+  heightPixels.setPixelColor(height, heightPixels.Color(0, 255, 0));
+  heightPixels.setBrightness(150);
+  heightPixels.show();
+}
+
+void smash(int led){
+  if (led> numberOfPixels){
+    return;
+  }
+  for (int i = 0; i < led; i++) {
+    strikePixels.setPixelColor(i, strikePixels.Color(255, 0, 0));
+    strikePixels.setBrightness(150);
+    strikePixels.show();
+    delay(30 * i);
+  }
+  delay(1000);
+  for (int i = led; i >= 0; i--) {
+    strikePixels.setPixelColor(i, strikePixels.Color(0, 0, 0));
+    strikePixels.setBrightness(150);
+    strikePixels.show();
+    delay(20 * i);
+  }
+}
+
+void turnOffAllPixels() {
+  for (int i = 0; i < numberOfPixels; i++) {
+    strikePixels.setPixelColor(i, strikePixels.Color(0, 0, 0));
+    heightPixels.setPixelColor(i, heightPixels.Color(0, 0, 0));
+  }
+}
+
+void reconnect() {
+  if (!mqttClient.connected()) {
+    mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD);  
+    mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS);
+  }
 }
