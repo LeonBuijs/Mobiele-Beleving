@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_container"
+    android:id="@+id/own_score_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="visible"
@@ -14,12 +14,10 @@
         android:columnCount="3"
         android:gravity="center"
         android:rowCount="2"
-
-        android:background="@drawable/score_border"
-        >
+        android:background="@drawable/score_border">
 
         <TextView
-            android:id="@+id/textNumber"
+            android:id="@+id/textOwnNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -29,17 +27,17 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textName"
+            android:id="@+id/textDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="Name"
+            android:text="Date"
             android:textSize="20sp"
             android:layout_margin="5dp"
             android:textColor="@color/black"/>
 
         <TextView
-            android:id="@+id/textScore"
+            android:id="@+id/textOwnScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"

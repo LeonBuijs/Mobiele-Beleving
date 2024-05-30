@@ -39,8 +39,8 @@ public class Score{
         this.score = score;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public String getDateTime() {
+        return dateTime.getDayOfMonth() + "-" + dateTime.getMonth() + "-" + dateTime.getYear();
     }
 
     public void setDateTime(LocalDateTime dateTime) {
