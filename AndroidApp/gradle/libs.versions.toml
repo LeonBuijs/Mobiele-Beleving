@@ -8,7 +8,7 @@ material = "1.12.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
 orgEclipsePahoAndroidService = "1.1.1"
-orgEclipsePahoAndroidServiceVersion = "1.0.2"
+orgEclipsePahoAndroidServiceVersion = "1.1.1"
 orgEclipsePahoClientMqttv3 = "1.2.5"
 
 [libraries]
