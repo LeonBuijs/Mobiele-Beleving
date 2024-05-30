@@ -21,23 +21,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/green"
             android:onClick="setMainScreen"
             android:text="@string/mainButton"
-            android:textColor="@color/black"
-            app:strokeColor="@color/black"
             app:strokeWidth="3dp" />
+
 
         <Button
             android:id="@+id/button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/green"
             android:onClick="setScoreScreen"
             android:text="@string/scoreButton"
-            android:textColor="@color/black"
-            app:strokeColor="@color/black"
             app:strokeWidth="3dp" />
 
         <Button
@@ -45,11 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/green"
             android:onClick="setAchievementScreen"
             android:text="@string/achievementButton"
-            android:textColor="@color/black"
-            app:strokeColor="@color/black"
             app:strokeWidth="3dp" />
     </LinearLayout>
 

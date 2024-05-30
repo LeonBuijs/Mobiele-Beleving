@@ -3,5 +3,8 @@
     <style name="Base.Theme.AndroidApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/green</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="textAppearanceButton">@color/black</item>
     </style>
 </resources>
