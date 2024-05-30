@@ -55,8 +55,20 @@ public class Scoreview extends AppCompatActivity {
         startActivity(new Intent(this, Achievements.class));
     }
 
+    private void sortScores(){
+        scores.sort(new ScoreComparator());
+        for (Score score : scores) {
+            score.setNum(scores.indexOf(score)+1);
+        }
+    }
+
     private void displayItems() {
         scores.add(new Score(1, "Leon Buijs", 1000));
+        scores.add(new Score(1, "Jasper Trommelen", 999));
+        scores.add(new Score(1, "Sybe Tienstra", 750));
+        scores.add(new Score(1, "Tiemen Breugelmans", 888));
+        scores.add(new Score(1, "Mohammed Lahlal", 739));
+        sortScores();
         recyclerView = findViewById(R.id.recyclerViewScores);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

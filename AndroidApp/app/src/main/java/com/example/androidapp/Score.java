@@ -1,14 +1,18 @@
 package com.example.androidapp;
 
-public class Score {
+import java.time.LocalDateTime;
+
+public class Score{
     private int num;
     private String name;
     private int score;
+    private LocalDateTime dateTime;
 
     public Score(int num, String name, int score) {
         this.num = num;
         this.name = name;
         this.score = score;
+        this.dateTime = LocalDateTime.now();
     }
 
     public int getNum() {
@@ -33,5 +37,13 @@ public class Score {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
