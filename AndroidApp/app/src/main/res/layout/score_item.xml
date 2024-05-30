@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="visible"
-    app:cardBackgroundColor="#00FFFFFF">
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,9 @@
         android:columnCount="3"
         android:gravity="center"
         android:rowCount="2"
-        android:background="@drawable/score_border">
+
+        android:background="@drawable/score_border"
+        >
 
         <TextView
             android:id="@+id/textNumber"

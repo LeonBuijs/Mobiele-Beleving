@@ -8,16 +8,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Scoreview extends AppCompatActivity {
+    RecyclerView recyclerView;
+    private List<Score> scores = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstancesState) {
         super.onCreate(savedInstancesState);
         setContentView(R.layout.activity_scoreview);
         Spinner spinner = findViewById(R.id.dropdown_menu);
+        displayItems();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -47,5 +53,13 @@ public class Scoreview extends AppCompatActivity {
     }
     public void setAchievementScreen(View view){
         startActivity(new Intent(this, Achievements.class));
+    }
+
+    private void displayItems() {
+        scores.add(new Score(1, "Leon Buijs", 1000));
+        recyclerView = findViewById(R.id.recyclerViewScores);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setAdapter(new ScoreAdapter(getApplicationContext(), scores));
     }
 }
