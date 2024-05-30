@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--a style example but styles are probably not needed-->
+<!--    <style name="NavigationButton" parent="Theme.AndroidApp">-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="strokeColor">@color/black</item>-->
+<!--        <item name="android:backgroundTint">@color/green</item>-->
+<!--    </style>-->
+</resources>
