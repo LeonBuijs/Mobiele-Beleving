@@ -26,7 +26,7 @@ public class MQTTClient {
     private final String TOPIC = "MobieleBelevingA5";
     private final String LOGTAG = MainActivity.class.getName();
     private final String LOG_TAG = "MQTT_A5";
-    private final int QUALITY_OF_SERVICE = 0;//mag ook 2 ofzo zijn
+    private final int QUALITY_OF_SERVICE = 2;//mag ook 0 ofzo zijn
     private static final String CLIENT_ID = "A5" + UUID.randomUUID().toString();
     private static final String BROKER_HOST_URL = "tcp://broker.hivemq.com:1883";
     private MqttAndroidClient mqttClient;
