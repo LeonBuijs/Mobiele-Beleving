@@ -12,6 +12,7 @@ import java.util.List;
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreViewHolder>{
     private Context context;
     private List<Score> list;
+    private int theme = R.layout.score_item;
 
     public ScoreAdapter(Context context, List<Score> list) {
         this.context = context;
@@ -21,7 +22,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreViewHolder>{
     @NonNull
     @Override
     public ScoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ScoreViewHolder(LayoutInflater.from(context).inflate(R.layout.score_item, parent, false));
+        return new ScoreViewHolder(LayoutInflater.from(context).inflate(this.theme, parent, false));
     }
 
     @Override
@@ -34,5 +35,13 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreViewHolder>{
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setTheme(int theme) {
+        if (theme == 1) {
+            this.theme = R.layout.score_item;
+        } else if (theme == 2){
+            this.theme = R.layout.score_item_theme2;
+        }
     }
 }
