@@ -15,6 +15,7 @@ import java.util.List;
 public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHolder>{
     private Context context;
     private List<Achievement> list;
+    private int theme;
 
     public AchievementAdapter(Context context, List<Achievement> list) {
         this.context = context;
@@ -24,7 +25,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
     @NonNull
     @Override
     public AchievementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AchievementViewHolder(LayoutInflater.from(context).inflate(R.layout.achievement_item, parent, false));
+        return new AchievementViewHolder(LayoutInflater.from(context).inflate(this.theme, parent, false));
     }
 
     @Override
@@ -48,5 +49,12 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
     @Override
     public int getItemCount() {
         return list.size();
+    }
+    public void setTheme(int theme) {
+        if (theme == 1) {
+            this.theme = R.layout.achievement_item;
+        } else if (theme == 2){
+            this.theme = R.layout.achievement_item_theme2;
+        }
     }
 }

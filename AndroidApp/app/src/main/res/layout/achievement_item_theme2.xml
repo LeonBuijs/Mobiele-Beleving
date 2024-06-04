@@ -5,14 +5,13 @@
     android:id="@+id/achievement_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/green">
+    app:cardBackgroundColor="@color/pink">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green"
-        android:visibility="visible"
-        app:cardBackgroundColor="@color/green">
+        android:backgroundTint="@color/pink"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/achievementimage"

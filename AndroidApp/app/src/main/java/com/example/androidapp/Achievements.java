@@ -21,9 +21,11 @@ import java.util.List;
 public class Achievements extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Achievement> achievements = new ArrayList<>();
+    private AchievementAdapter achievementAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.JohanEnDeEenhoorn);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_achievements);
@@ -52,6 +54,8 @@ public class Achievements extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewAchievements);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerView.setAdapter(new AchievementAdapter(getApplicationContext(), achievements));
+        this.achievementAdapter = new AchievementAdapter(getApplicationContext(), achievements);
+        this.achievementAdapter.setTheme(2); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+        recyclerView.setAdapter(this.achievementAdapter);
     }
 }
