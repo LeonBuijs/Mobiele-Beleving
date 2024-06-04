@@ -1,9 +1,12 @@
 package com.example.androidapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.androidapp.Mqtt.MQTTClient;
 import com.example.androidapp.Mqtt.MqttMR;
 
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MainActivity extends AppCompatActivity implements MqttMR {
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR {
     private final String PASSWORD = "liefsSybeA5";
     private final String TOPIC = "MobieleBelevingA5";
     private MQTTClient mqttClient;
+    private  SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements MqttMR {
             return insets;
         });
         mqttClient = new MQTTClient(getApplicationContext(),this);
+       sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
 
     }
 
@@ -56,5 +61,17 @@ public class MainActivity extends AppCompatActivity implements MqttMR {
 
     @Override
     public void messageReceived(String topic, MqttMessage payload) {
+        try {
+            String message = payload.toString();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("TEST",message);
+            editor.apply();
+            Toast.makeText(this,sharedPreferences.getString("TEST",null),Toast.LENGTH_LONG).show();
+        }catch (Exception e){
+            System.out.println("Message Received went wrong");
+            e.printStackTrace();
+        }
+
+
     }
 }
