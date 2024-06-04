@@ -8,10 +8,10 @@
 const int pinPressureSenor = 36;
 const int pinSensitivity = 39;
 //neopixels
-const int numberOfPixels = 13;
+const int numberOfPixels = 12;
 
-const int heightPin = 16;//todo
-const int strikePin = 17;//todo
+const int heightPin = 16;
+const int strikePin = 17;
 
 //lcd
 //Set the LCD address, number of columns and rows, and specify SCL and SDA pins
@@ -34,7 +34,9 @@ const char* MQTT_PASSWORD = "liefsSybeA5";
 
 const char* MQTT_TOPIC_TEST = "MobieleBelevingA5";
 
-const int MQTT_QOS = 0;
+const int MQTT_QOS = 1;
+
+String mqttScore = "0";
 
 WiFiClient wifiClient;
 
@@ -55,12 +57,14 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   for (int i = 0; i < 4; i++) { txt[i] = '\0'; }
   strncpy(txt, (const char *) payload, length > 4 ? 4 : length);
   Serial.println(txt);
+  mqttScore = txt;
 }
 
 //variabelen
 int strikeScore = 0;
 int height = 0;
 int score = 0;
+
 boolean toPlay = true;
 
 int sensitivityCorrection = 0;
@@ -76,10 +80,14 @@ void setup() {
   WiFi.disconnect();
   WiFi.begin(WLAN_SSID, WLAN_ACCESS_KEY);
 
+  printLCD("Connecting...");
+
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
     delay(1000);
   }
+  printLCD("Connected!");
+  delay(1000);
+  lcd.clear();
   //mqtt
   // mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD);
   mqttClient.setServer(MQTT_BROKER_URL, MQTT_PORT);
@@ -103,6 +111,7 @@ void setup() {
     while (!mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS)) {
       Serial.print("Failed to subscribe to topic ");
       Serial.println(MQTT_TOPIC_TEST);
+      printLCD("Error, Restart");
       delay(1000);
     }
   } else {
@@ -110,8 +119,8 @@ void setup() {
     Serial.println(MQTT_TOPIC_TEST);
   }
 
-  mqttClient.publish(MQTT_TOPIC_TEST, "hallotjes");
-  mqttClient.publish(MQTT_TOPIC_TEST, "test2");
+  // mqttClient.publish(MQTT_TOPIC_TEST, "hallotjes");
+  // mqttClient.publish(MQTT_TOPIC_TEST, "test2");
 
   //leds
   // heightPixels.begin();
@@ -133,8 +142,8 @@ void loop() {
   // }
 
   
-
-  // Serial.println(readMaxPressure());
+  // readMaxPressure();
+  // Serial.println(strikeScore);
 
   // int pres = readPressure();
   
@@ -148,11 +157,11 @@ void loop() {
   if (toPlay) {
     generateHeight();
 
-    prepareSmash((height/100) -2);
+    prepareSmash((height/100) -3);
 
     readMaxPressure();
 
-    smash((strikeScore/100) -2);
+    smash((strikeScore/100) -3);
 
     score = returnScore(strikeScore, height);
     printScore(score);
@@ -163,10 +172,14 @@ void loop() {
     reconnect();
 
     mqttClient.publish(MQTT_TOPIC_TEST, itoa(score, charInt, 10));
+
+    mqttClient.loop();
+
+    printScore(score);
     
-    strikeScore = 0;
-    height = 0;
-    score = 0;
+    // strikeScore = 0;
+    // height = 0;
+    // score = 0;
   }
 
   delay(100);
@@ -257,7 +270,7 @@ void prepareSmash(int height){
 
 void smash(int led){
   if (led> numberOfPixels){
-    return;
+    led = numberOfPixels;
   }
   for (int i = 0; i < led; i++) {
     strikePixels.setPixelColor(i, strikePixels.Color(255, 0, 0));
