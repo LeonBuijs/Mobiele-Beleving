@@ -12,6 +12,7 @@ import java.util.List;
 public class MainAdapter extends RecyclerView.Adapter<MainViewHolder>{
     private Context context;
     private List<Score> list;
+    private int theme = R.layout.own_score_item;
 
     public MainAdapter(Context context, List<Score> list) {
         this.context = context;
@@ -20,7 +21,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainViewHolder>{
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MainViewHolder(LayoutInflater.from(context).inflate(R.layout.own_score_item, parent, false));
+        return new MainViewHolder(LayoutInflater.from(context).inflate(this.theme, parent, false));
     }
 
     @Override
@@ -33,5 +34,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainViewHolder>{
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setTheme(int theme) {
+        if (theme == 1) {
+            this.theme = R.layout.own_score_item;
+        } else if (theme == 2){
+            this.theme = R.layout.own_score_item_theme2;
+        }
     }
 }

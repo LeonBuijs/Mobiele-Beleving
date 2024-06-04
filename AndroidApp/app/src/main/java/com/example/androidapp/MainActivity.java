@@ -18,6 +18,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Score> ownScores = new ArrayList<>();
+    private MainAdapter mainAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         displayItems();
+        setTheme(R.style.Cobra);
     }
 
     public void setMainScreen(View view){
@@ -58,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycleViewForMainScreen);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerView.setAdapter(new MainAdapter(getApplicationContext(), ownScores));
+        mainAdapter = new MainAdapter(getApplicationContext(), ownScores);
+        mainAdapter.setTheme(1); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+        recyclerView.setAdapter(mainAdapter);
     }
+
+
 }

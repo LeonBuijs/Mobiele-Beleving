@@ -17,9 +17,11 @@ import java.util.List;
 public class Scoreview extends AppCompatActivity {
     RecyclerView recyclerView;
     private List<Score> scores = new ArrayList<>();
+    private ScoreAdapter scoreAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstancesState) {
+        setTheme(R.style.JohanEnDeEenhoorn);
         super.onCreate(savedInstancesState);
         setContentView(R.layout.activity_scoreview);
         Spinner spinner = findViewById(R.id.dropdown_menu);
@@ -44,6 +46,7 @@ public class Scoreview extends AppCompatActivity {
 //        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         //todo maak een layout voor de dropdown menu inplaats van de vooraf gemaakte simple_spinner_item.
         spinner.setAdapter(adapter);
+
     }
 
     public void setMainScreen(View view){
@@ -72,6 +75,8 @@ public class Scoreview extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewScores);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerView.setAdapter(new ScoreAdapter(getApplicationContext(), scores));
+        this.scoreAdapter = new ScoreAdapter(getApplicationContext(), scores);
+        scoreAdapter.setTheme(2); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+        recyclerView.setAdapter(this.scoreAdapter);
     }
 }
