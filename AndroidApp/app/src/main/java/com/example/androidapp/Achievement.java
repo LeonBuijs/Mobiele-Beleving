@@ -1,4 +1,6 @@
 package com.example.androidapp;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 public class Achievement {
     private int image;

@@ -1,4 +1,6 @@
 package com.example.androidapp;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.content.Context;
 import android.graphics.ColorMatrix;
@@ -52,9 +54,9 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
     }
     public void setTheme(int theme) {
         if (theme == 1) {
-            this.theme = R.layout.achievement_item;
+            this.theme = R.layout.achievement_item_green;
         } else if (theme == 2){
-            this.theme = R.layout.achievement_item_theme2;
+            this.theme = R.layout.achievement_item_pink;
         }
     }
 }
