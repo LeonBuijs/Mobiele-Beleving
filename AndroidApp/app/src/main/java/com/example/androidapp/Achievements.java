@@ -40,7 +40,7 @@ public class Achievements extends AppCompatActivity {
     }
 
     private void displayItems() {
-        achievements.add(new Achievement(R.drawable.eerste_slag1, "Eerste Slag", "Gefeliciteerd met je eerste slag! \nWelkom bij het avontuur van Johan en de Eenhoorn.", false));
+        achievements.add(new Achievement(R.drawable.eerste_slag1, "Eerste Slag", "Gefeliciteerd met je eerste slag! \nWelkom bij het avontuur van Johan en de Eenhoorn.", true));
         achievements.add(new Achievement(R.drawable.verbonden_krijger2, "Verbonden Krijger", "Je hebt je verbonden met de kracht van de high striker! Laat de slagen beginnen.", true));
         achievements.add(new Achievement(R.drawable.groeimaker_3, "Groeimaker", "Je blijft maar groeien! Blijf die scores verbeteren.", false));
         achievements.add(new Achievement(R.drawable.nieuwsgierige_avonturier_4, "Nieuwsgierige Avonturier", "Je hebt de app verkend! Nu weet je waar alles te vinden is.", false));
