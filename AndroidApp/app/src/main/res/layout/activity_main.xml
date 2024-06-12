@@ -55,10 +55,9 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainScreenInfo"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/mainScreenInfo" />
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainScreenInfo"
         android:layout_width="392dp"
         android:layout_height="412dp"
