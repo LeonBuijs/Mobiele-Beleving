@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/connectButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -45,7 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextNumber"
             app:strokeColor="#000000"
-            app:strokeWidth="5dp"/>
+            app:strokeWidth="5dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
