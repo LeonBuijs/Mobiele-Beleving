@@ -6,11 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".Achievements">
 
+    <TextView
+        android:id="@+id/textAchievementOverview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Achievements: 0/20"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewAchievements" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAchievements"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textAchievementOverview"
         app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="setMainScreen"
             android:text="Main" />
 
         <Button
@@ -40,6 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="setScoreScreen"
             android:text="Scores" />
 
         <Button
@@ -47,6 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="setAchievementScreen"
             android:text="Achievements" />
     </LinearLayout>
 
