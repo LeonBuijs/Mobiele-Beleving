@@ -33,6 +33,8 @@ const char* MQTT_USERNAME = "MobieleBelevingA5";
 const char* MQTT_PASSWORD = "liefsSybeA5";
 
 const char* MQTT_TOPIC_TEST = "MobieleBelevingA5";
+const char* MQTT_TOPIC_PAIR = "MobieleBelevingA5/pair";
+const char* MQTT_TOPIC_THEME = "MobieleBelevingA5/theme";
 
 const int MQTT_QOS = 1;
 
@@ -46,6 +48,15 @@ PubSubClient mqttClient(wifiClient);
 Adafruit_NeoPixel heightPixels(numberOfPixels, heightPin, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel strikePixels(numberOfPixels, strikePin, NEO_GRB + NEO_KHZ800);
 
+//variabelen
+int strikeScore = 0;
+int height = 0;
+int score = 0;
+
+boolean toPlay = false;
+
+int sensitivityCorrection = 0;
+
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
   // Logging
   Serial.print("MQTT callback called for topic ");
@@ -53,21 +64,15 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Payload length ");
   Serial.println(length);
   
+  if (strcmp(topic, MQTT_TOPIC_PAIR) == 0) {
+    toPlay = true;
+  }
   char txt[4];
   for (int i = 0; i < 4; i++) { txt[i] = '\0'; }
   strncpy(txt, (const char *) payload, length > 4 ? 4 : length);
   Serial.println(txt);
   mqttScore = txt;
 }
-
-//variabelen
-int strikeScore = 0;
-int height = 0;
-int score = 0;
-
-boolean toPlay = true;
-
-int sensitivityCorrection = 0;
 
 
 void setup() {
@@ -119,6 +124,20 @@ void setup() {
     Serial.println(MQTT_TOPIC_TEST);
   }
 
+  if (!mqttClient.subscribe(MQTT_TOPIC_PAIR, MQTT_QOS)) {
+    Serial.print("Failed to subscribe to topic ");
+    Serial.println(MQTT_TOPIC_PAIR);
+    while (!mqttClient.subscribe(MQTT_TOPIC_PAIR, MQTT_QOS)) {
+      Serial.print("Failed to subscribe to topic ");
+      Serial.println(MQTT_TOPIC_PAIR);
+      printLCD("Error, Restart");
+      delay(1000);
+    }
+  } else {
+    Serial.print("Subscribed to topic ");
+    Serial.println(MQTT_TOPIC_PAIR);
+  }
+
   // mqttClient.publish(MQTT_TOPIC_TEST, "hallotjes");
   // mqttClient.publish(MQTT_TOPIC_TEST, "test2");
 
@@ -136,6 +155,21 @@ void loop() {
 
   mqttClient.loop();
 
+  char charPairing[5];
+  int pairCode = createPairingCode();
+  printPairingCode(pairCode);
+  
+  char* charScore = itoa(pairCode, charPairing, 10);
+
+  mqttClient.publish(MQTT_TOPIC_PAIR, charScore);
+
+  
+
+  while (!toPlay) {
+    mqttClient.loop();
+    reconnect();
+    delay(1);
+  }
   // if (!mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS)) {
   //   Serial.print("Failed to subscribe to topic ");
   //   Serial.println(MQTT_TOPIC_TEST);
@@ -156,6 +190,8 @@ void loop() {
 
   if (toPlay) {
     generateHeight();
+
+    printLCD("Height: " + height);
 
     prepareSmash((height/100) -3);
 
@@ -233,6 +269,17 @@ void printScore(int score) {
   lcd.print(height);
 }
 
+void printPairingCode(int code) {
+  Serial.println(code + "");
+  lcd.clear();
+
+  lcd.setCursor(0,0);
+  lcd.print("Koppelcode");
+
+  lcd.setCursor(0,1);
+  lcd.print(String(code));
+}
+
 int returnScore(int score, int height) {
   int difference = height - score;
 
@@ -299,4 +346,8 @@ void reconnect() {
     mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD);  
     mqttClient.subscribe(MQTT_TOPIC_TEST, MQTT_QOS);
   }
+}
+
+int createPairingCode() {
+  return random(1000, 9999);
 }
