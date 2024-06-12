@@ -27,7 +27,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MainActivity extends AppCompatActivity implements MqttMR {
     private MainAdapter mainAdapter;
+    private MainAdapter2 mainAdapter2;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerView2;
     private List<Score> ownScores = new ArrayList<>();
 
     private final String USERNAME = "MobieleBelevingA5";
@@ -87,6 +89,12 @@ public class MainActivity extends AppCompatActivity implements MqttMR {
         mainAdapter = new MainAdapter(getApplicationContext(), ownScores);
         mainAdapter.setTheme(1); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
         recyclerView.setAdapter(mainAdapter);
+
+        recyclerView2 = findViewById(R.id.mainScreenInfo);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+        mainAdapter2 = new MainAdapter2(getApplicationContext());
+        mainAdapter2.setTheme(1); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+        recyclerView2.setAdapter(mainAdapter2);
     }
 
 
