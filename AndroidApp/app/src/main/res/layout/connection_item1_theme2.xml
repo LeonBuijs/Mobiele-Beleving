@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="visible"
-    app:cardBackgroundColor="@color/darkGreen">
+    app:cardBackgroundColor="@color/yellow">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/score_border">
+        android:background="@drawable/score_border_theme2">
 
         <EditText
             android:id="@+id/editTextNumber"
@@ -38,7 +38,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/darkGreen"
+            android:backgroundTint="@color/purple"
             android:text="Verbinden"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
