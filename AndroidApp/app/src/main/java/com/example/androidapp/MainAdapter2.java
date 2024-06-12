@@ -34,7 +34,7 @@ public class MainAdapter2 extends RecyclerView.Adapter<MainViewHolder2>{
         if (theme == 1) {
             this.theme = R.layout.connection_item1;
         } else if (theme == 2){
-            this.theme = R.layout.own_score_item_theme2; //todo
+            this.theme = R.layout.connection_item1_theme2;
         }
     }
 }
