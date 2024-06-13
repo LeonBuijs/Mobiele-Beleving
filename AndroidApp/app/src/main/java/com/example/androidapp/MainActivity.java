@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     private String lastRecieved = "";
     private String pairingCode = "";
     private int appTheme = 1;
+    private boolean connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,12 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
 //        editor.putString("THEME","2");
 //        editor.apply();
         if (sharedPreferences != null) {
+            if (sharedPreferences.getString("CONNECTED", null) != null) {
+                if (sharedPreferences.getString("CONNECTED", null).equals("1")) {
+                    this.connected = true;
+                }
+            }
+
             if (sharedPreferences.getString("THEME", null) != null) {
                 if (sharedPreferences.getString("THEME", null).equals("1")) {
                     setTheme(R.style.Cobra);
@@ -69,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             setTheme(R.style.Cobra);
             this.appTheme = 1;
         }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EdgeToEdge.enable(this);
@@ -81,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
 
         mqttClient = new MQTTClient(getApplicationContext(), this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (this.connected){
+            mqttClient.setTOPIC(("MobieleBelevingA5/connect"));
+        }
     }
 
     public void TESTMQTTTEMP(View view) {
@@ -149,11 +161,14 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
 
 
     public void connectToTopic() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         String number = String.valueOf(mainAdapter2.getMainViewHolder2().editText.getText());
         System.out.println(number);
         if (number.equals(this.pairingCode)) {
             mqttClient.setTOPIC(("MobieleBelevingA5/connect"));
             mqttClient.publishMessage("connect");
+            editor.putString("CONNECTED", "1");
+            editor.apply();
             getThemeFromTopic(this.pairingCode);
         }
     }
@@ -163,10 +178,8 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         int theme = Integer.parseInt(pairingCodeTheme.substring(0,1));
         System.out.println(theme);
         if (theme < 5) {
-            System.out.println("Theme 1");
             editor.putString("THEME", "1");
         } else {
-            System.out.println("Theme 2");
             editor.putString("THEME", "2");
         }
         editor.apply();
