@@ -43,22 +43,31 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     private boolean messageRecieved = false;
     private String lastRecieved = "";
     private String pairingCode = "";
+    private int appTheme = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("THEME","1");
-        editor.apply();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("THEME","2");
+//        editor.apply();
         if (sharedPreferences != null) {
-            if (sharedPreferences.getString("THEME", null).equals("1")) {
+            if (sharedPreferences.getString("THEME", null) != null) {
+                if (sharedPreferences.getString("THEME", null).equals("1")) {
+                    setTheme(R.style.Cobra);
+                    this.appTheme = 1;
+                } else if (sharedPreferences.getString("THEME", null).equals("2")) {
+                    setTheme(R.style.JohanEnDeEenhoorn);
+                    this.appTheme = 2;
+                }
+            } else {
                 setTheme(R.style.Cobra);
-            } else if (sharedPreferences.getString("THEME", null).equals("2")) {
-                setTheme(R.style.JohanEnDeEenhoorn);
+                this.appTheme = 1;
             }
         } else {
             System.out.println("null");
             setTheme(R.style.Cobra);
+            this.appTheme = 1;
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -108,13 +117,13 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mainAdapter = new MainAdapter(getApplicationContext(), ownScores);
-        mainAdapter.setTheme(1); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+        mainAdapter.setTheme(this.appTheme); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
         recyclerView.setAdapter(mainAdapter);
 
         recyclerView2 = findViewById(R.id.mainScreenInfo);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         mainAdapter2 = new MainAdapter2(getApplicationContext(), this);
-        mainAdapter2.setTheme(1); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+        mainAdapter2.setTheme(this.appTheme); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
         recyclerView2.setAdapter(mainAdapter2);
     }
 
@@ -129,9 +138,6 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             Toast.makeText(this, sharedPreferences.getString("TEST", null), Toast.LENGTH_LONG).show();
             this.messageRecieved = true;
             this.lastRecieved = sharedPreferences.getString("TEST", null);
-            if (message.equals("theme1") || message.equals("theme2")) {
-                getThemeFromTopic(message);
-            }
             if (mqttClient.getTOPIC().equals("MobieleBelevingA5/pair")){
                 this.pairingCode = message;
             }
@@ -148,14 +154,19 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         if (number.equals(this.pairingCode)) {
             mqttClient.setTOPIC(("MobieleBelevingA5/connect"));
             mqttClient.publishMessage("connect");
+            getThemeFromTopic(this.pairingCode);
         }
     }
 
-    public void getThemeFromTopic(String theme) {
+    public void getThemeFromTopic(String pairingCodeTheme) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (theme.equals("theme1")) {
+        int theme = Integer.parseInt(pairingCodeTheme.substring(0,1));
+        System.out.println(theme);
+        if (theme < 5) {
+            System.out.println("Theme 1");
             editor.putString("THEME", "1");
-        } else if (theme.equals("theme2")) {
+        } else {
+            System.out.println("Theme 2");
             editor.putString("THEME", "2");
         }
         editor.apply();
