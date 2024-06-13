@@ -141,10 +141,9 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     public void connectToTopic() {
         String number = String.valueOf(mainAdapter2.getMainViewHolder2().editText.getText());
         System.out.println(number);
-        mqttClient.subscribe(("MobieleBelevingA5/" + number));
-        mqttClient.setTOPIC(("MobieleBelevingA5/" + number));
-        mqttClient.publishMessage("getTheme");
-
+        mqttClient.setTOPIC(("MobieleBelevingA5/connect"));
+        mqttClient.publishMessage("connect");
+        mqttClient.subscribe(("MobieleBelevingA5/pair"));
     }
 
     public void getThemeFromTopic(String theme) {
