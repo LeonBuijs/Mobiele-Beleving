@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("THEME","1");
+        editor.apply();
         if (sharedPreferences != null) {
             if (sharedPreferences.getString("THEME", null).equals("1")) {
                 setTheme(R.style.Cobra);
