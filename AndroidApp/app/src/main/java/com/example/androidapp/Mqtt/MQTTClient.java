@@ -23,7 +23,7 @@ import java.util.UUID;
 public class MQTTClient {
     private final String USERNAME = "MobieleBelevingA5";
     private final String PASSWORD = "liefsSybeA5";
-    private String TOPIC = "MobieleBelevingA5";
+    private String TOPIC = "MobieleBelevingA5/pair";
     private final String LOGTAG = MainActivity.class.getName();
     private final String LOG_TAG = "MQTT_A5";
     private final int QUALITY_OF_SERVICE = 2;//mag ook 0 ofzo zijn

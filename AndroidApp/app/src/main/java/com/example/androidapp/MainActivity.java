@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     private SharedPreferences sharedPreferences;
     private boolean messageRecieved = false;
     private String lastRecieved = "";
+    private String pairingCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,9 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             if (message.equals("theme1") || message.equals("theme2")) {
                 getThemeFromTopic(message);
             }
+            if (mqttClient.getTOPIC().equals("MobieleBelevingA5/pair")){
+                this.pairingCode = message;
+            }
         } catch (Exception e) {
             System.out.println("Message Received went wrong");
             e.printStackTrace();
@@ -141,17 +145,13 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     public void connectToTopic() {
         String number = String.valueOf(mainAdapter2.getMainViewHolder2().editText.getText());
         System.out.println(number);
-        mqttClient.setTOPIC(("MobieleBelevingA5/connect"));
-        mqttClient.publishMessage("connect");
-        mqttClient.subscribe(("MobieleBelevingA5/pair"));
+        if (number.equals(this.pairingCode)) {
+            mqttClient.setTOPIC(("MobieleBelevingA5/connect"));
+            mqttClient.publishMessage("connect");
+        }
     }
 
     public void getThemeFromTopic(String theme) {
-//        if (theme.equals("theme1")) {
-//            setTheme(R.style.Cobra);
-//        } else if (theme.equals("theme2")) {
-//            setTheme(R.style.JohanEnDeEenhoorn);
-//        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (theme.equals("theme1")) {
             editor.putString("THEME", "1");
@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         }
         editor.apply();
         recreate();
-
     }
 
     @Override
