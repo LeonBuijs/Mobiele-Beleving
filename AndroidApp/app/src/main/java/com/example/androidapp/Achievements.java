@@ -1,7 +1,9 @@
 package com.example.androidapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,10 +21,33 @@ public class Achievements extends AppCompatActivity {
     private List<Achievement> achievements = new ArrayList<>();
     private AchievementAdapter achievementAdapter;
     private TextView textAchievementOverview;
+    private SharedPreferences sharedPreferences;
+    private int appTheme = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.JohanEnDeEenhoorn);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("THEME","2");
+//        editor.apply();
+        if (sharedPreferences != null) {
+            if (sharedPreferences.getString("THEME", null) != null) {
+                if (sharedPreferences.getString("THEME", null).equals("1")) {
+                    setTheme(R.style.Cobra);
+                    this.appTheme = 1;
+                } else if (sharedPreferences.getString("THEME", null).equals("2")) {
+                    setTheme(R.style.JohanEnDeEenhoorn);
+                    this.appTheme = 2;
+                }
+            } else {
+                setTheme(R.style.Cobra);
+                this.appTheme = 1;
+            }
+        } else {
+            System.out.println("null");
+            setTheme(R.style.Cobra);
+            this.appTheme = 1;
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
 
@@ -68,7 +93,7 @@ public class Achievements extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         achievementAdapter = new AchievementAdapter(this, achievements);
-        achievementAdapter.setTheme(2); // Thema 1 = Groen, Thema 2 = Roze
+        achievementAdapter.setTheme(this.appTheme); // Thema 1 = Groen, Thema 2 = Roze
         recyclerView.setAdapter(achievementAdapter);
 
         updateAchievementOverview();

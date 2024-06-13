@@ -1,7 +1,9 @@
 package com.example.androidapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,10 +20,33 @@ public class Scoreview extends AppCompatActivity {
     RecyclerView recyclerView;
     private List<Score> scores = new ArrayList<>();
     private ScoreAdapter scoreAdapter;
+    private SharedPreferences sharedPreferences;
+    private int appTheme = 1;
 
     @Override
     protected void onCreate(Bundle savedInstancesState) {
-        setTheme(R.style.JohanEnDeEenhoorn);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("THEME","2");
+//        editor.apply();
+        if (sharedPreferences != null) {
+            if (sharedPreferences.getString("THEME", null) != null) {
+                if (sharedPreferences.getString("THEME", null).equals("1")) {
+                    setTheme(R.style.Cobra);
+                    this.appTheme = 1;
+                } else if (sharedPreferences.getString("THEME", null).equals("2")) {
+                    setTheme(R.style.JohanEnDeEenhoorn);
+                    this.appTheme = 2;
+                }
+            } else {
+                setTheme(R.style.Cobra);
+                this.appTheme = 1;
+            }
+        } else {
+            System.out.println("null");
+            setTheme(R.style.Cobra);
+            this.appTheme = 1;
+        }
         super.onCreate(savedInstancesState);
         setContentView(R.layout.activity_scoreview);
         Spinner spinner = findViewById(R.id.dropdown_menu);
@@ -76,7 +101,7 @@ public class Scoreview extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         this.scoreAdapter = new ScoreAdapter(getApplicationContext(), scores);
-        scoreAdapter.setTheme(2); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+        scoreAdapter.setTheme(this.appTheme); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
         recyclerView.setAdapter(this.scoreAdapter);
     }
 }
