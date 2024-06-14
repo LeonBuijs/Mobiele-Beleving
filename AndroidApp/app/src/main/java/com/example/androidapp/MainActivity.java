@@ -49,9 +49,10 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 //        editor.putString("THEME","2");
-//        editor.apply();
+        editor.putString("CONNECTED", "0");
+        editor.apply();
         if (sharedPreferences != null) {
             if (sharedPreferences.getString("CONNECTED", null) != null) {
                 if (sharedPreferences.getString("CONNECTED", null).equals("1")) {
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         mqttClient = new MQTTClient(getApplicationContext(), this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (this.connected){
-            mqttClient.setTOPIC(("MobieleBelevingA5/connect"));
+            mqttClient.setTOPIC(("MobieleBelevingA5/score"));
         }
     }
 
@@ -119,11 +120,6 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     }
 
     private void displayItems() {
-        ownScores.add(new Score(1, "Test", 1000));
-        ownScores.add(new Score(1, "Test", 873));
-        ownScores.add(new Score(1, "Test", 328));
-        ownScores.add(new Score(1, "Test", 255));
-        ownScores.add(new Score(1, "Test", 987));
         sortScores();
         recyclerView = findViewById(R.id.recycleViewForMainScreen);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -147,16 +143,26 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("TEST", message);
             editor.apply();
-            Toast.makeText(this, sharedPreferences.getString("TEST", null), Toast.LENGTH_LONG).show();
             this.messageRecieved = true;
             this.lastRecieved = sharedPreferences.getString("TEST", null);
             if (mqttClient.getTOPIC().equals("MobieleBelevingA5/pair")){
                 this.pairingCode = message;
+            } else if (mqttClient.getTOPIC().equals("MobieleBelevingA5/code")){
+                ownScores.add(new Score(0, "Test", Integer.parseInt(message)));
+                displayItems();
+                disconnect();
             }
         } catch (Exception e) {
             System.out.println("Message Received went wrong");
             e.printStackTrace();
         }
+    }
+
+    private void disconnect() {
+        mqttClient.setTOPIC("MobieleBelevingA5/pair");
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("CONNECTED", "0");
+        editor.apply();
     }
 
 
@@ -174,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     }
 
     public void getThemeFromTopic(String pairingCodeTheme) {
+        System.out.println("thema");
         SharedPreferences.Editor editor = sharedPreferences.edit();
         int theme = Integer.parseInt(pairingCodeTheme.substring(0,1));
         System.out.println(theme);
