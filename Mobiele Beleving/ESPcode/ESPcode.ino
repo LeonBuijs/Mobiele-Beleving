@@ -7,9 +7,9 @@
 //analog reads
 const int pinPressureSenor = 36;
 const int pinSensitivity = 39;
+
 //neopixels
 const int numberOfPixels = 12;
-
 const int heightPin = 16;
 const int strikePin = 17;
 
@@ -18,15 +18,14 @@ const int strikePin = 17;
 //SCL = D22
 //SDA = D21
 const int LINE_LENGTH = 16;
-LiquidCrystal_I2C lcd(0x27, 16, 2);  // Change 0x27 to your LCD address if different
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-//wifi //todo
+//wifi
 const char* WLAN_SSID = "iPhone van Jasper";
 const char* WLAN_ACCESS_KEY = "Jahpertje";
 
 //mqtt
 const char* MQTT_CLIENT_ID = "ESPTJE";
-//todo
 const char* MQTT_BROKER_URL = "broker.hivemq.com";
 const int   MQTT_PORT = 1883;
 const char* MQTT_USERNAME = "MobieleBelevingA5";
@@ -56,6 +55,11 @@ Adafruit_NeoPixel strikePixels(numberOfPixels, strikePin, NEO_GRB + NEO_KHZ800);
 const int johanDraak[2][3] = {{255, 123, 184}, {255, 245, 0}};
 const int cobra[2][3] = {{0, 255, 0}, {255, 0, 0}};
 
+const int ledBrightness = 50;
+
+int idlePosition = 0;
+
+//themas
 int currentThema = 1;
 
 const char* thema1 = "thema1";
@@ -136,6 +140,8 @@ void setup() {
   subscribeToTopic(MQTT_TOPIC_THEME);
 
   mqttClient.publish(MQTT_TOPIC_THEME, "thema1");
+
+  resetHeightPixels();
 }
 
 void subscribeToTopic(const char* topic) {
@@ -161,6 +167,8 @@ void loop() {
 
   turnOffAllPixels();
 
+  resetHeightPixels();
+
   char charPairing[5];
   int pairCode = createPairingCode();
   printPairingCode(pairCode);
@@ -180,7 +188,10 @@ void loop() {
         break;
       }
     }
+    ledIdle();
   }
+
+  turnOfStrikePixels();
 
   if (toPlay) {
     generateHeight();
@@ -209,6 +220,7 @@ void loop() {
   toPlay = false;
 
   delay(5000);
+  resetHeightPixels();
 }
 //todo bepalen welke waardes genegeerd moeten worden voor een threshold
 void readMaxPressure() {
@@ -221,7 +233,7 @@ void readMaxPressure() {
     mqttClient.loop();
     readSensitivity();
     int pressure = readPressure();
-    if  (pressure > 300) {
+    if  (pressure > 400) {
       strikeScore = pressure;
       running = false;
       break;
@@ -302,7 +314,7 @@ void resetHeightPixels() {
       heightPixels.setPixelColor(i, heightPixels.Color(cobra[0][0], cobra[0][1], cobra[0][2]));
     }
   }
-  heightPixels.setBrightness(100);
+  heightPixels.setBrightness(ledBrightness);
   
   heightPixels.show();
 }
@@ -319,7 +331,7 @@ void prepareSmash(int height){
   }
 
   // heightPixels.setPixelColor(height, heightPixels.Color(0, 255, 0));
-  heightPixels.setBrightness(100);
+  heightPixels.setBrightness(ledBrightness);
   heightPixels.show();
 }
 
@@ -329,24 +341,56 @@ void smash(int led){
   }
   for (int i = 0; i < led; i++) {
     strikePixels.setPixelColor(i, strikePixels.Color(255, 0, 0));
-    strikePixels.setBrightness(150);
+    strikePixels.setBrightness(ledBrightness);
     strikePixels.show();
     delay(30 * i);
   }
   delay(1000);
   for (int i = led; i >= 0; i--) {
     strikePixels.setPixelColor(i, strikePixels.Color(0, 0, 0));
-    strikePixels.setBrightness(150);
+    strikePixels.setBrightness(ledBrightness);
     strikePixels.show();
-    delay(20 * i);
+    delay(30 * i);
   }
 }
 
-void turnOffAllPixels() {
+void ledIdle() {
+  strikePixels.setBrightness(ledBrightness);
   for (int i = 0; i < numberOfPixels; i++) {
     strikePixels.setPixelColor(i, strikePixels.Color(0, 0, 0));
+  }
+
+  if (idlePosition > 21) {
+    idlePosition = 0;
+  }
+
+  if (idlePosition < 12) {
+    strikePixels.setPixelColor(idlePosition, strikePixels.Color(255, 0, 0));
+  } else {
+    strikePixels.setPixelColor(11 - (idlePosition % 11), strikePixels.Color(255, 0, 0));
+  }
+
+  idlePosition++;
+  strikePixels.show();
+}
+
+void turnOffAllPixels() {
+  turnOfHeightPixels();
+  turnOfStrikePixels();
+}
+
+void turnOfHeightPixels() {
+  for (int i = 0; i < numberOfPixels; i++) {
     heightPixels.setPixelColor(i, heightPixels.Color(0, 0, 0));
   }
+  heightPixels.show();
+}
+
+void turnOfStrikePixels() {
+  for (int i = 0; i < numberOfPixels; i++) {
+    strikePixels.setPixelColor(i, heightPixels.Color(0, 0, 0));
+  }
+  strikePixels.show();
 }
 
 void reconnect() {
@@ -361,5 +405,9 @@ void reconnect() {
 }
 
 int createPairingCode() {
-  return random(1000, 9999);
+  if (currentThema == 1) {
+    return random(1000, 4999);
+  } else {
+    return random(5000, 9999);
+  }
 }
