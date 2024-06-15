@@ -100,10 +100,6 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         System.out.println("connected to TOPIC: " + mqttClient.getTOPIC());
     }
 
-    public void TESTMQTTTEMP(View view) {
-        mqttClient.publishMessage("THIS IS A TEST");
-
-    }
 
     public void setMainScreen(View view) {
     }
@@ -154,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
                 this.pairingCode = message;
             } else if (mqttClient.getTOPIC().equals("MobieleBelevingA5/score")) {
                 // todo: scores opslaan in het geheugen zodat die in het begin geladen kunnen worden
-//                ownScores.add(new Score(0, "Test", Integer.parseInt(message)));
-//                displayItems();
+                ownScores.add(new Score(0, "Test", Integer.parseInt(message)));
+                displayItems();
                 System.out.println("score message: " + message);
                 disconnect();
 
@@ -170,10 +166,10 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("CONNECTED", "0");
         editor.apply();
-        mqttClient.unSubscribe("MobieleBelevingA5/pair");
         mqttClient.unSubscribe("MobieleBelevingA5/connect");
         mqttClient.unSubscribe("MobieleBelevingA5/score");
-        recreate();
+        mqttClient.subscribe("MobieleBelevingA5/pair");
+
     }
 
 
@@ -201,10 +197,13 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             editor.putString("THEME", "2");
         }
         editor.apply();
-        mqttClient.unSubscribe("MobieleBelevingA5/pair");
-        mqttClient.unSubscribe("MobieleBelevingA5/connect");
-        mqttClient.unSubscribe("MobieleBelevingA5/score");
-        recreate();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+//        mqttClient.unSubscribe("MobieleBelevingA5/pair");
+//        mqttClient.unSubscribe("MobieleBelevingA5/connect");
+//        mqttClient.unSubscribe("MobieleBelevingA5/score");
+//        recreate();
     }
 
     @Override
