@@ -111,6 +111,14 @@ public class MQTTClient {
             e.printStackTrace();
         }
     }
+    public void unSubscribe(String topic){
+        try {
+            mqttClient.unsubscribe(topic);
+            Log.i(LOG_TAG,"Unsubscribed to topic '" + topic + "'.");
+        } catch (MqttException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void publishMessage(String message){
         try {
