@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     private int appTheme = 1;
     private boolean connected = false;
     private boolean nameEntered = false;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,14 +164,19 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             this.lastRecieved = sharedPreferences.getString("TEST", null);
             System.out.println(mqttClient.getTOPIC());
             if (mqttClient.getTOPIC().equals("MobieleBelevingA5/pair")) {
-                this.pairingCode = message;
+                if (message.length() == 4) {
+                    this.pairingCode = message;
+                }
             } else if (mqttClient.getTOPIC().equals("MobieleBelevingA5/score")) {
                 // todo: scores opslaan in het geheugen zodat die in het begin geladen kunnen worden
-                ownScores.add(new Score(0, "Test", Integer.parseInt(message)));
-                displayItems();
-                System.out.println("score message: " + message);
-                disconnect();
-
+                if (Integer.parseInt(message) <= 1000) {
+                    ownScores.add(new Score(0, this.name, Integer.parseInt(message)));
+                    displayItems();
+                    System.out.println("score message: " + message);
+                    disconnect();
+                } else {
+                    this.pairingCode = message;
+                }
             }
         } catch (Exception e) {
             System.out.println("Message Received went wrong");
@@ -181,11 +187,16 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     private void disconnect() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("CONNECTED", "0");
+        // Scores opslaan
+        for (Score score : ownScores) {
+            editor.putString("SCOREAMOUNT", String.valueOf(ownScores.size()));
+            editor.putString("SCORE" + (ownScores.indexOf(score) + 1), String.valueOf(score.getScore()));
+        }
+        editor.putString("NAME", "");
         editor.apply();
         mqttClient.unSubscribe("MobieleBelevingA5/connect");
         mqttClient.unSubscribe("MobieleBelevingA5/score");
         mqttClient.subscribe("MobieleBelevingA5/pair");
-
     }
 
 
@@ -225,13 +236,23 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
 //        recreate();
     }
 
-    public void enteredName(){
+    public void enteredName() {
         if (mainAdapterName != null) {
             System.out.println("name clicked");
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("NAME", String.valueOf(mainAdapterName.getMainViewHolderName().editTextName.getText()));
             editor.apply();
             this.nameEntered = true;
+            this.name = String.valueOf(mainAdapterName.getMainViewHolderName().editTextName.getText());
+            // Scores uitlezen
+            if (sharedPreferences.getString("SCOREAMOUNT", null) != null) {
+                for (int i = 0; i < Integer.parseInt(sharedPreferences.getString("SCOREAMOUNT", null)); i++) {
+                    if (sharedPreferences.getString("SCORE" + (i + 1), null) != null) {
+                        ownScores.add(new Score(0, this.name, Integer.parseInt(sharedPreferences.getString("SCORE" + (i + 1), null))));
+                    }
+                }
+
+            }
             displayItems();
         }
     }
