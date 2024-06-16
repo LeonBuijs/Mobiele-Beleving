@@ -229,8 +229,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         if (mainAdapterName != null) {
             System.out.println("name clicked");
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            // TODO: editText = null
-            editor.putString("NAME", String.valueOf(mainAdapterName.getMainViewHolderName().editText.getText()));
+            editor.putString("NAME", String.valueOf(mainAdapterName.getMainViewHolderName().editTextName.getText()));
             editor.apply();
             this.nameEntered = true;
             displayItems();

@@ -8,11 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainViewHolderName extends RecyclerView.ViewHolder{
-    public EditText editText;
+    public EditText editTextName;
     public Button button;
     public MainViewHolderName(@NonNull View itemView) {
         super(itemView);
-        editText = itemView.findViewById(R.id.editTextName);
+        editTextName = itemView.findViewById(R.id.editTextName);
         button = itemView.findViewById(R.id.confirmButton);
     }
 }
