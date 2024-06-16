@@ -25,7 +25,6 @@
             android:text="@string/mainButton"
             app:strokeWidth="3dp" />
 
-
         <Button
             android:id="@+id/button5"
             android:layout_width="wrap_content"
@@ -70,5 +69,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Nieuwe knoppen voor PDF-functies -->
+    <!--
+<Button
+   android:id="@+id/button_share_pdf"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Deel PDF"
+   android:onClick="shareScores"
+   app:layout_constraintTop_toBottomOf="@+id/recycleViewForMainScreen"
+   app:layout_constraintStart_toStartOf="parent"
+   android:layout_marginTop="16dp"
+   android:layout_marginStart="16dp"/>
+
+<Button
+   android:id="@+id/button_view_pdf"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Bekijk PDF"
+   android:onClick="viewPdf"
+   app:layout_constraintTop_toBottomOf="@+id/recycleViewForMainScreen"
+   app:layout_constraintStart_toEndOf="@+id/button_share_pdf"
+   android:layout_marginTop="16dp"
+   android:layout_marginStart="16dp"/>
+
+<Button
+   android:id="@+id/button_download_pdf"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Download PDF"
+   android:onClick="createAndDownloadPdf"
+   app:layout_constraintTop_toBottomOf="@+id/recycleViewForMainScreen"
+   app:layout_constraintStart_toEndOf="@+id/button_view_pdf"
+   android:layout_marginTop="16dp"
+   android:layout_marginStart="16dp"/>
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

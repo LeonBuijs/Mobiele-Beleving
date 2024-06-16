@@ -266,4 +266,33 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     public void onItemClicked2() {
         enteredName();
     }
+     /*
+    public void sharePdf(View view) {
+        File pdfFile = generatePdf();
+        if (pdfFile != null) {
+            Uri pdfUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("application/pdf");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, pdfUri);
+            startActivity(Intent.createChooser(shareIntent, "Share PDF"));
+        }
+    }
+
+    public void viewPdf(View view) {
+        File pdfFile = generatePdf();
+        if (pdfFile != null) {
+            Uri pdfUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+            Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+            viewIntent.setDataAndType(pdfUri, "application/pdf");
+            viewIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(viewIntent);
+        }
+    }
+
+    public void createAndDownloadPdf(View view) {
+        createPdf pdfCreator = new createPdf(this);
+        pdfCreator.createPdf(ownScores);
+        Toast.makeText(this, "PDF opgeslagen in Documenten/MyApp", Toast.LENGTH_SHORT).show();
+    }
+    */
 }
