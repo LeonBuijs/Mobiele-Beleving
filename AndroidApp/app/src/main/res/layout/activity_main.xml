@@ -5,35 +5,104 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/mainButton" />
+            android:onClick="setMainScreen"
+            android:text="@string/mainButton"
+            app:strokeWidth="3dp" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/scoreButton" />
+            android:onClick="setScoreScreen"
+            android:text="@string/scoreButton"
+            app:strokeWidth="3dp" />
 
         <Button
             android:id="@+id/button6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/achievementButton" />
+            android:onClick="setAchievementScreen"
+            android:text="@string/achievementButton"
+            app:strokeWidth="3dp" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleViewForMainScreen"
+        android:layout_width="410dp"
+        android:layout_height="172dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainScreenInfo" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainScreenInfo"
+        android:layout_width="392dp"
+        android:layout_height="412dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/recycleViewForMainScreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nieuwe knoppen voor PDF-functies -->
+    <!--
+<Button
+   android:id="@+id/button_share_pdf"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Deel PDF"
+   android:onClick="shareScores"
+   app:layout_constraintTop_toBottomOf="@+id/recycleViewForMainScreen"
+   app:layout_constraintStart_toStartOf="parent"
+   android:layout_marginTop="16dp"
+   android:layout_marginStart="16dp"/>
+
+<Button
+   android:id="@+id/button_view_pdf"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Bekijk PDF"
+   android:onClick="viewPdf"
+   app:layout_constraintTop_toBottomOf="@+id/recycleViewForMainScreen"
+   app:layout_constraintStart_toEndOf="@+id/button_share_pdf"
+   android:layout_marginTop="16dp"
+   android:layout_marginStart="16dp"/>
+
+<Button
+   android:id="@+id/button_download_pdf"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:text="Download PDF"
+   android:onClick="createAndDownloadPdf"
+   app:layout_constraintTop_toBottomOf="@+id/recycleViewForMainScreen"
+   app:layout_constraintStart_toEndOf="@+id/button_view_pdf"
+   android:layout_marginTop="16dp"
+   android:layout_marginStart="16dp"/>
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
