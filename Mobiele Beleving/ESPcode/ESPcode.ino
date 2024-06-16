@@ -406,7 +406,7 @@ void reconnect() {
 
 int createPairingCode() {
   if (currentThema == 1) {
-    return random(1000, 4999);
+    return random(1001, 4999);
   } else {
     return random(5000, 9999);
   }
