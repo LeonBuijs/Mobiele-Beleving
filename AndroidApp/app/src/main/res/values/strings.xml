@@ -1,3 +1,49 @@
 <resources>
-    <string name="app_name">AndroidApp</string>
-</resources>
+    <string name="app_name">Moker Mayam</string>
+    <string name="mainButton">Main</string>
+    <string name="scoreButton">Scores</string>
+    <string name="achievementButton">Achievements</string>
+
+    <!--Achievements-->
+        <string name="eerste_slag">Eerste Slag</string>
+        <string name="verbonden_krijger">Verbonden Krijger</string>
+        <string name="groeimaker">Groeimaker</string>
+        <string name="nieuwsgierige_avonturier">Nieuwsgierige Avonturier</string>
+        <string name="consistente_smasher">Consistente Smasher</string>
+        <string name="dagelijkse_kampioen">Dagelijkse Kampioen</string>
+        <string name="tien_op_rij">Tien Op Rij</string>
+        <string name="magische_mepper">Magische Mepper</string>
+        <string name="krachtpatser">Krachtpatser</string>
+        <string name="high_striker_meester">High Striker Meester</string>
+        <string name="legendarische_smasher">Legendarische Smasher</string>
+        <string name="onverslaanbaar">Onverslaanbaar</string>
+        <string name="marathon_smasher">Marathon Smasher</string>
+        <string name="teamplayer">Teamplayer</string>
+        <string name="social_star">Social Star</string>
+        <string name="early_bird">Early Bird</string>
+        <string name="night_owl">Night Owl</string>
+        <string name="feestbeest">Feestbeest</string>
+        <string name="uitdager">Uitdager</string>
+        <string name="reisgenoot">Reisgenoot</string>
+        <string name="gefeliciteerd_met_je_eerste_slag_welkom_bij_het_avontuur_van_johan_en_de_eenhoorn">Gefeliciteerd met je eerste slag! Welkom bij het avontuur van Johan en de Eenhoorn!</string>
+        <string name="je_hebt_je_verbonden_met_de_kracht_van_de_high_striker_laat_de_slagen_beginnen">Je hebt je verbonden met de kracht van de High Striker! Laat de slagen beginnen!</string>
+        <string name="je_blijft_maar_groeien_blijf_die_scores_verbeteren">Je blijft maar groeien! Blijf die scores verbeteren!</string>
+        <string name="je_hebt_de_app_verkend_nu_weet_je_waar_alles_te_vinden_is">Je hebt de app verkend! Nu weet je waar alles te vinden is!</string>
+        <string name="je_bent_goed_op_weg_blijf_slaan_en_verbeteren">Je bent goed op weg! Blijf slaan en verbeteren!</string>
+        <string name="vandaag_ben_jij_de_kampioen_laat_je_vrienden_zien_wie_de_baas_is">Vandaag ben jij de kampioen! Laat je vrienden zien wie de baas is!</string>
+        <string name="je_bent_niet_te_stoppen_wat_een_doorzettingsvermogen">Je bent niet te stoppen! Wat een doorzettingsvermogen!</string>
+        <string name="wat_een_kracht_je_hebt_een_magische_slag_in_je">Wat een kracht! Je hebt een magische slag in je!</string>
+        <string name="je_kracht_is_onge_venaard_houd_dit_vol">Je kracht is ongeëvenaard! Houd dit vol!</string>
+        <string name="je_hebt_de_high_striker_onder_de_knie_fantastisch_werk">Je hebt de High Striker onder de knie! Fantastisch werk!</string>
+        <string name="je_hebt_geschiedenis_geschreven_iedereen_zal_jouw_naam_herinneren">Je hebt geschiedenis geschreven! Iedereen zal jouw naam herinneren!</string>
+        <string name="niemand_kan_je_stoppen_je_bent_een_levende_legende">Niemand kan je stoppen! Je bent een levende legende!</string>
+        <string name="je_bent_een_echte_volhouder_geweldige_prestatie">Je bent een echte volhouder! Geweldige prestatie!</string>
+        <string name="samen_slaan_is_altijd_leuker_bedankt_voor_het_uitnodigen_van_je_vrienden">Samen slaan is altijd leuker! Bedankt voor het uitnodigen van je vrienden!</string>
+        <string name="je_scores_gaan_viral_deel_de_magie_van_johan_en_de_eenhoorn">Je scores gaan viral! Deel de magie van Johan en de Eenhoorn!</string>
+        <string name="vroeg_uit_de_veren_en_vol_energie_goed_gedaan">Vroeg uit de veren en vol energie! Goed gedaan!</string>
+        <string name="nachtelijke_avonturier_je_energie_kent_geen_grenzen">Nachtelijke avonturier! Je energie kent geen grenzen!</string>
+        <string name="wat_een_feestelijke_slag_fijne_feestdag_en_blijf_genieten">Wat een feestelijke slag! Fijne feestdag en blijf genieten!</string>
+        <string name="je_hebt_je_vriend_verslagen_de_uitdaging_is_gewonnen">Je hebt je vriend verslagen! De uitdaging is gewonnen!</string>
+        <string name="je_hebt_de_high_striker_op_verschillende_plekken_ervaren_wat_een_reis">Je hebt de High Striker op verschillende plekken ervaren! Wat een reis!</string>
+        <string name="achievement_overview">Achievements: %1$d/%2$d</string>
+    </resources>
