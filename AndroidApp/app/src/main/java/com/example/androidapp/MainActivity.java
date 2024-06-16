@@ -31,6 +31,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class MainActivity extends AppCompatActivity implements MqttMR, SelectListener {
     private MainAdapter mainAdapter;
     private MainAdapter2 mainAdapter2;
+    private MainAdapterName mainAdapterName;
     private RecyclerView recyclerView;
     private RecyclerView recyclerView2;
     private List<Score> ownScores = new ArrayList<>();
@@ -45,18 +46,25 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     private String pairingCode = "";
     private int appTheme = 1;
     private boolean connected = false;
+    private boolean nameEntered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 //        editor.putString("THEME","2");
-//        editor.putString("CONNECTED", "0");
-//        editor.apply();
+        editor.putString("CONNECTED", "0");
+        editor.putString("NAME", "");
+        editor.apply();
         if (sharedPreferences != null) {
             if (sharedPreferences.getString("CONNECTED", null) != null) {
                 if (sharedPreferences.getString("CONNECTED", null).equals("1")) {
                     this.connected = true;
+                }
+            }
+            if (sharedPreferences.getString("NAME", null) != null) {
+                if (!sharedPreferences.getString("NAME", null).isEmpty()) {
+                    nameEntered = true;
                 }
             }
             if (sharedPreferences.getString("THEME", null) != null) {
@@ -98,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             mqttClient.setTOPIC("MobieleBelevingA5/pair");
         }
         System.out.println("connected to TOPIC: " + mqttClient.getTOPIC());
+        System.out.println(this.nameEntered);
     }
 
 
@@ -130,9 +139,16 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
 
         recyclerView2 = findViewById(R.id.mainScreenInfo);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
-        mainAdapter2 = new MainAdapter2(getApplicationContext(), this);
-        mainAdapter2.setTheme(this.appTheme); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
-        recyclerView2.setAdapter(mainAdapter2);
+        System.out.println("name entered: " + this.nameEntered);
+        if (!this.nameEntered) {
+            mainAdapterName = new MainAdapterName(getApplicationContext(), this);
+            mainAdapterName.setTheme(this.appTheme); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+            recyclerView2.setAdapter(mainAdapterName);
+        } else {
+            mainAdapter2 = new MainAdapter2(getApplicationContext(), this);
+            mainAdapter2.setTheme(this.appTheme); // thema 1 = Cobra, thema 2 = Johan en de eenhoorn
+            recyclerView2.setAdapter(mainAdapter2);
+        }
     }
 
 
@@ -174,17 +190,20 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
 
 
     public void connectToTopic() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String number = String.valueOf(mainAdapter2.getMainViewHolder2().editText.getText());
-        System.out.println(number);
-        if (number.equals(this.pairingCode)) {
-            mqttClient.setTOPIC("MobieleBelevingA5/connect");
-            mqttClient.publishMessage("connect");
-            editor.putString("CONNECTED", "1");
-            editor.apply();
-            getThemeFromTopic(this.pairingCode);
+        if (mainAdapter2 != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            String number = String.valueOf(mainAdapter2.getMainViewHolder2().editText.getText());
+            System.out.println(number);
+            if (number.equals(this.pairingCode)) {
+                mqttClient.setTOPIC("MobieleBelevingA5/connect");
+                mqttClient.publishMessage("connect");
+                editor.putString("CONNECTED", "1");
+                editor.apply();
+                getThemeFromTopic(this.pairingCode);
+            }
         }
     }
+
 
     public void getThemeFromTopic(String pairingCodeTheme) {
         System.out.println("thema");
@@ -206,8 +225,24 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
 //        recreate();
     }
 
+    public void enteredName(){
+        if (mainAdapterName != null) {
+            System.out.println("name clicked");
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("NAME", String.valueOf(mainAdapterName.getMainViewHolderName().editTextName.getText()));
+            editor.apply();
+            this.nameEntered = true;
+            displayItems();
+        }
+    }
+
     @Override
     public void onItemClicked() {
         connectToTopic();
+    }
+
+    @Override
+    public void onItemClicked2() {
+        enteredName();
     }
 }
