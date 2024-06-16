@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 //        editor.putString("THEME","2");
-        editor.putString("CONNECTED", "0");
-        editor.putString("NAME", "");
-        editor.apply();
+//        editor.putString("CONNECTED", "0");
+//        editor.putString("NAME", "");
+//        editor.apply();
         if (sharedPreferences != null) {
             if (sharedPreferences.getString("CONNECTED", null) != null) {
                 if (sharedPreferences.getString("CONNECTED", null).equals("1")) {
