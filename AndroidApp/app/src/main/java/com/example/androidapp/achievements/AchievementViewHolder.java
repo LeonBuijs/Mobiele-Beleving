@@ -1,4 +1,4 @@
-package com.example.androidapp;
+package com.example.androidapp.achievements;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidapp.R;
 
 public class AchievementViewHolder extends RecyclerView.ViewHolder{
     public ImageView imageView;

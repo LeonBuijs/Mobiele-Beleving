@@ -1,4 +1,4 @@
-package com.example.androidapp;
+package com.example.androidapp.achievements;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidapp.R;
 
 import java.util.List;
 

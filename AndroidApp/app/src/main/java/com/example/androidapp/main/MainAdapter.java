@@ -1,4 +1,4 @@
-package com.example.androidapp;
+package com.example.androidapp.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidapp.R;
+import com.example.androidapp.score.Score;
 
 import java.util.List;
 

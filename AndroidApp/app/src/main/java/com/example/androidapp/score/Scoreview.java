@@ -1,4 +1,4 @@
-package com.example.androidapp;
+package com.example.androidapp.score;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +12,10 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidapp.R;
+import com.example.androidapp.achievements.Achievements;
+import com.example.androidapp.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;

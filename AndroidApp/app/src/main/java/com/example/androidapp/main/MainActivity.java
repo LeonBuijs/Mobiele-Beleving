@@ -1,7 +1,6 @@
-package com.example.androidapp;
+package com.example.androidapp.main;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,11 +17,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.androidapp.Mqtt.MQTTClient;
-import com.example.androidapp.Mqtt.MqttMR;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.androidapp.mqtt.MQTTClient;
+import com.example.androidapp.mqtt.MqttMR;
+import com.example.androidapp.R;
+import com.example.androidapp.score.Score;
+import com.example.androidapp.score.ScoreComparator;
+import com.example.androidapp.score.Scoreview;
+import com.example.androidapp.SelectListener;
+import com.example.androidapp.achievements.Achievements;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

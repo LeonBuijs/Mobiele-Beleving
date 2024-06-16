@@ -1,9 +1,9 @@
-package com.example.androidapp.Mqtt;
+package com.example.androidapp.mqtt;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.androidapp.MainActivity;
+import com.example.androidapp.main.MainActivity;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;

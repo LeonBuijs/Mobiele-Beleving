@@ -1,4 +1,4 @@
-package com.example.androidapp;
+package com.example.androidapp.achievements;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidapp.main.MainActivity;
+import com.example.androidapp.R;
+import com.example.androidapp.score.Scoreview;
 
 import java.util.ArrayList;
 import java.util.List;

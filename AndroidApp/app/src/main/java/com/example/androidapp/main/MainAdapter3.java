@@ -1,12 +1,14 @@
-package com.example.androidapp;
+package com.example.androidapp.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidapp.R;
+import com.example.androidapp.SelectListener;
 
 public class MainAdapter3 extends RecyclerView.Adapter<MainViewHolder3>{
     private Context context;
