@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     private int appTheme = 1;
     private boolean connected = false;
     private boolean nameEntered = false;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             } else if (mqttClient.getTOPIC().equals("MobieleBelevingA5/score")) {
                 // todo: scores opslaan in het geheugen zodat die in het begin geladen kunnen worden
                 if (Integer.parseInt(message) <= 1000) {
-                    ownScores.add(new Score(0, "Test", Integer.parseInt(message)));
+                    ownScores.add(new Score(0, this.name, Integer.parseInt(message)));
                     displayItems();
                     System.out.println("score message: " + message);
                     disconnect();
@@ -237,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             editor.putString("NAME", String.valueOf(mainAdapterName.getMainViewHolderName().editTextName.getText()));
             editor.apply();
             this.nameEntered = true;
+            this.name = String.valueOf(mainAdapterName.getMainViewHolderName().editTextName.getText());
             displayItems();
         }
     }
