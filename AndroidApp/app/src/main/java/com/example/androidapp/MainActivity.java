@@ -163,14 +163,19 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
             this.lastRecieved = sharedPreferences.getString("TEST", null);
             System.out.println(mqttClient.getTOPIC());
             if (mqttClient.getTOPIC().equals("MobieleBelevingA5/pair")) {
-                this.pairingCode = message;
+                if (message.length() == 4) {
+                    this.pairingCode = message;
+                }
             } else if (mqttClient.getTOPIC().equals("MobieleBelevingA5/score")) {
                 // todo: scores opslaan in het geheugen zodat die in het begin geladen kunnen worden
-                ownScores.add(new Score(0, "Test", Integer.parseInt(message)));
-                displayItems();
-                System.out.println("score message: " + message);
-                disconnect();
-
+                if (Integer.parseInt(message) <= 1000) {
+                    ownScores.add(new Score(0, "Test", Integer.parseInt(message)));
+                    displayItems();
+                    System.out.println("score message: " + message);
+                    disconnect();
+                } else {
+                    this.pairingCode = message;
+                }
             }
         } catch (Exception e) {
             System.out.println("Message Received went wrong");
