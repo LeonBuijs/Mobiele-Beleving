@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidapp.Mqtt.MQTTClient;
 import com.example.androidapp.Mqtt.MqttMR;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -171,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
                 // todo: scores opslaan in het geheugen zodat die in het begin geladen kunnen worden
                 if (Integer.parseInt(message) <= 1000) {
                     ownScores.add(new Score(0, this.name, Integer.parseInt(message)));
+                    Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+                    toast.show();
                     displayItems();
                     System.out.println("score message: " + message);
                     disconnect();
@@ -260,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements MqttMR, SelectLis
     @Override
     public void onItemClicked() {
         connectToTopic();
+        Toast toast = Toast.makeText(this, "Je kunt slaan, doe je best!", Toast.LENGTH_LONG);
+        toast.show();
     }
 
     @Override
